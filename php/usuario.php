@@ -32,41 +32,44 @@ if ($action == "register") {
 
     $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-try {
-    $stmt = $pdo->prepare("INSERT INTO usuario (Nombre, Apellido, documento,Telefono, email, password) VALUES (:nombre, :apellido, :documento, :telefono, :email, :password)");
-    $stmt->bindParam(':nombre', $nombre);
-    $stmt->bindParam(':apellido', $apellido);
-    $stmt->bindParam(':documento', $documento);
-    $stmt->bindParam(':telefono', $telefono);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $passwordHash);
-    $stmt->execute();
-
-    // Enviar respuesta JSON de éxito
-    echo json_encode(['success' => true]);
-    
-} catch (PDOException $e) {
-    if ($e->getCode() == 23000) {
-        echo json_encode(['success' => false, 'message' => 'El usuario o correo ya está registrado']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Error al registrar el usuario: ' . $e->getMessage()]);
+    try {
+        $stmt = $pdo->prepare("INSERT INTO usuario (Nombre, Apellido, documento,Telefono, email, password) VALUES (:nombre, :apellido, :documento, :telefono, :email, :password)");
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':apellido', $apellido);
+        $stmt->bindParam(':documento', $documento);
+        $stmt->bindParam(':telefono', $telefono);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $passwordHash);
+        $stmt->execute();
+        // Enviar respuesta JSON de éxito
+        echo json_encode(['success' => true]);
+        
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            echo json_encode(['success' => false, 'message' => 'El usuario o correo ya está registrado']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al registrar el usuario: ' . $e->getMessage()]);
+        }
     }
-}
 } elseif ($action == "login") {
      // Obtener y decodificar la entrada JSON
     $input = json_decode(file_get_contents("php://input"), true);
-    if (!$input || !isset($input['documento']) || !isset($input['password'])) {
+    if (!$input || !isset($input['documento']) || !isset($input['password']) || !isset($input['tipoUsuario'])) {
         echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
         exit;
     }
 
     $documento = htmlspecialchars($input['documento']);  
     $password = htmlspecialchars($input['password']);
+    $tipoUsuario = htmlspecialchars($input['tipoUsuario']);
  
     try {
-        // Preparar la consulta de selección para comprobar el usuario
-        $stmt = $pdo->prepare("SELECT * FROM usuario WHERE documento = :documento");
+        // traiga el usuario y el rol del usuario
+        
+        $stmt = $pdo->prepare("SELECT u.*, r.nombreRol FROM usuario u INNER JOIN usuario_rol ur ON u.ID_Usuario = ur.id_usuario 
+        INNER JOIN rol r ON ur.id_rol = r.idRol WHERE u.documento = :documento AND r.idRol = :tipoUsuario");
         $stmt->bindParam(':documento', $documento);
+        $stmt->bindParam(':tipoUsuario', $tipoUsuario);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($user) {
@@ -76,7 +79,7 @@ try {
                 // Configurar sesión
                 $_SESSION['user_id'] = $user['ID_Usuario'];
                 $_SESSION['documento'] = $user['documento'];
-                // Contraseña válida y ya encriptada
+                $_SESSION['tipoUsuario'] = $user['nombreRol'];
                 echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Usuario o contraseña incorrectos']);

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
+<?php
+session_start();
+$rol = $_SESSION['tipoUsuario'];
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -15,10 +19,11 @@
 </head>
 
 <body>
-    
+
     <!-- div para cargar el overlay -->
     <div id="overlay" class="overlay"></div>
     <!-- Navbar -->
+    <!-- menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">Admin Panel</a>
@@ -32,8 +37,10 @@
                             Proveedor
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownPedidos">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearProveedor">Crear Proveedor</a></li>
-                            <li><a class="dropdown-item" href="#pedidos">Listar Proveedor</a></li>
+                            <?php if ($rol === 'vendedor') : ?>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearProveedor">Crear Proveedor</a></li>
+                            <?php endif; ?>
+                            <li><a class="dropdown-item" href="proveedores.php">Listar Proveedor</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -41,34 +48,42 @@
                             Categorias
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearCategoria">Crear Categoria</a></li>
+                            <?php if ($rol === 'vendedor') : ?>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearCategoria">Crear Categoria</a></li>
+                            <?php endif; ?>
                             <li><a class="dropdown-item" href="#">Listar Categoria</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProductos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Productos 
+                            Productos
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownProductos">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearProducto">Crear Producto</a></li>
+                            <?php if ($rol === 'vendedor') : ?>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalCrearProducto">Crear Producto</a></li>
+                            <?php endif; ?>
                             <li><a class="dropdown-item" href="productos.php">Ver Productos</a></li>
                         </ul>
-                    </li>                    
+                    </li>
                 </ul>
                 <!-- Botón Perfil -->
-                <div class="ms-auto d-flex align-items-center">
+                <div class="ms-auto align-items-center">
                     <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPedidos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-user"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownPedidos">
-                            <button type="button" id="verPerfil" class="btn btn-outline-light btn-sm me-2 " onclick="mostrarPerfil()">Ver Perfil</button>
-
-                            <li><a class="dropdown-item" href="#pedidos">Cuenta</a></li>
-                            <li><a class="dropdown-item" href="#pedidos">Cerrar sesión</a></li>
-                        </ul>
-                    </li>                    
+                        <label class="text-white me-3 p-2">
+                            <?php echo $_SESSION['tipoUsuario'] ?>
+                        </label>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownPerfil" role="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu mr-0" aria-labelledby="navbarDropdownPerfil" style="position: absolute; left: -100px;">
+                                <li><a class="dropdown-item" id="verPerfil" onclick="mostrarPerfil()">Ver Perfil</a></li>
+                                <li><a class="dropdown-item" href="#pedidos">Cuenta</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="cambiarRol()">Cambiar Rol</a></li>
+                                <li><a class="dropdown-item" href="login.html">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -103,6 +118,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal para Crear Categoria -->
     <div class="modal fade" id="modalCrearCategoria" tabindex="-1" aria-labelledby="modalCrearCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -205,5 +221,3 @@
             </div>
         </div>
     </div>
-
-    
