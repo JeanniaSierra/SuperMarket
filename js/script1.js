@@ -6,6 +6,7 @@ function verificarLogin() {
     let action ="login";
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
+    const tipoUsuario = document.getElementById("tipoUsuario").value;
     let mensaje = document.getElementById("message");
 
     fetch("/Bootstrap/php/usuario.php",{
@@ -13,7 +14,7 @@ function verificarLogin() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({action, username, password})
+        body: JSON.stringify({action, username, password, tipoUsuario})
     })
     .then(response => response.json())
     .then(data=> {

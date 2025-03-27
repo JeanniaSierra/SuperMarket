@@ -21,6 +21,7 @@ function verificarLogin() {
         if (data.success) {
             mensaje.style.color = "green";
             mensaje.textContent = "¡Inicio de sesión exitoso!";
+            localStorage.setItem('user_id', data.user_id);
             // Redirigir después de un pequeño retraso
             setTimeout(() => {
                 window.location.href = "index.php";

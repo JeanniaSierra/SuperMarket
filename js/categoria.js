@@ -23,7 +23,7 @@ function cargarCategorias() {
 function crearCategoria(){
     const action = "crearCategoria";
     const nombreCategoria = document.getElementById('nombreCategoria').value;
-    fetch('/Bootstrap/php/categoria.php', {
+    fetch('/Bootstrap/php/controladorCategoria.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

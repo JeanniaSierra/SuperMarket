@@ -80,8 +80,11 @@ if ($action == "register") {
                 $_SESSION['user_id'] = $user['ID_Usuario'];
                 $_SESSION['documento'] = $user['documento'];
                 $_SESSION['tipoUsuario'] = $user['nombreRol'];
-                echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso']);
-            } else {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Inicio de sesión exitoso',
+                    'user_id' => $user['ID_Usuario']
+                ]);} else {
                 echo json_encode(['success' => false, 'message' => 'Usuario o contraseña incorrectos']);
             }
         } else {
