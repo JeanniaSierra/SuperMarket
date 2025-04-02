@@ -63,7 +63,7 @@
         .ov-preloader .ov-icon {
             width: 100px;
             height: 100px;
-            background-image: url(../img/mision.png);
+            background-image: url(public/img/mision.png);
             background-repeat: no-repeat;
             background-position: center;
             -webkit-background-size: cover;
@@ -141,7 +141,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/usuario.js"></script>
+    <script src="public/js/usuario.js"></script>
 
     <script type="text/javascript">
         $(window).on('load', function() {

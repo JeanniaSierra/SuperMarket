@@ -2,7 +2,7 @@ cargarCategorias();
 
 function cargarCategorias() {
     const action = "cargarCategorias";
-    fetch('/Bootstrap/php/categoria.php', {
+    fetch('/Bootstrap/controlador/controladorCategoria.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ function cargarCategorias() {
 function crearCategoria(){
     const action = "crearCategoria";
     const nombreCategoria = document.getElementById('nombreCategoria').value;
-    fetch('/Bootstrap/php/controladorCategoria.php', {
+    fetch('/Bootstrap/controlador/controladorCategoria.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -33,13 +33,13 @@ function crearCategoria(){
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Categoria creada correctamente');
+                showNotification(data.message, "success");
             } else {
-                alert('Error al crear la categoria');
+                showNotification(data.message, "error");
             }
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("Error en el registro");
+                showNotification(data.message, "error");
         });
 }

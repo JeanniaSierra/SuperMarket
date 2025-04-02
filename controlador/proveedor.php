@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include '../config/conexion.php';
 $input = json_decode(file_get_contents("php://input"), true);
 $action = $input['action'];
 //funcion para llamar los proveedores con try catch ya tengo la conexion a la base de datos y $pdo genera error

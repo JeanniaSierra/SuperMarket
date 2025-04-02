@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include '../config/conexion.php';
 $input = json_decode(file_get_contents("php://input"), true);
 $action = $_POST['action'] ?? $input['action'];
 global $pdo;

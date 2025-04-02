@@ -9,7 +9,7 @@ function verificarLogin() {
     const tipoUsuario = document.getElementById("tipoUsuario").value;
     const mensaje = document.getElementById("message");
 
-    fetch("/Bootstrap/php/usuario.php", {
+    fetch("/Bootstrap/controlador/usuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -24,7 +24,7 @@ function verificarLogin() {
             localStorage.setItem('user_id', data.user_id);
             // Redirigir después de un pequeño retraso
             setTimeout(() => {
-                window.location.href = "index.php";
+                window.location.href = "/Bootstrap/Vista/principal.php";
             }, 1000);
         } else {
             intentosRestantes--; 
@@ -65,7 +65,7 @@ function registrarUsuario() {
     const email = document.getElementById("registroEmail").value;
     const password = document.getElementById("registroContraseña").value;
 
-    fetch("/Bootstrap/php/usuario.php", {
+    fetch("/Bootstrap/controlador/usuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -92,7 +92,7 @@ function registrarUsuario() {
 function mostrarPerfil() {
     document.getElementById("overlay").style.display = "block";
     const action="getPerfil";
-    fetch("/Bootstrap/php/usuario.php", {
+    fetch("/Bootstrap/controlador/usuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -140,7 +140,7 @@ function modificarPerfil(){
     const telefono = document.getElementById("perfilTelefono").value;
     const email = document.getElementById("perfilEmail").value;
 
-    fetch("/bootstrap/php/usuario.php",{
+    fetch("/Bootstrap/controlador/usuario.php",{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

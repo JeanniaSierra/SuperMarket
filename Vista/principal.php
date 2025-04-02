@@ -4,7 +4,7 @@
 <section class="bg-sect1 p-3 text-center">
     <div class="row">
         <div class="col-md-6">
-            <img src="../img/mision.png" alt="" class="img_info">
+            <img src="../public/img/mision.png" alt="" class="img_info">
         </div>
         <div class="col-md-6" style="display: inline-grid;">
             <h1 class="text-center">Misión</h1>
@@ -25,7 +25,7 @@
             </p>
         </div>
         <div class="col-md-6">
-            <img src="../img/vision.png" alt="" class="img_info">
+            <img src="../public/img/vision.png" alt="" class="img_info">
         </div>
     </div>
 </section>

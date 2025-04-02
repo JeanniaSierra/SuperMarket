@@ -1,7 +1,10 @@
 cargarProductos();
+// llama funcion de otro js
+// includeScript("global.js" );
+
 function cargarProductos() {
     const action = "cargarProductos";
-    fetch('/Bootstrap/php/producto.php', {
+    fetch('/Bootstrap/controlador/producto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -13,23 +16,23 @@ function cargarProductos() {
             let tbody = document.getElementById('listaProductos');
             tbody.innerHTML = '';
             data.forEach(producto => {
-                let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${producto.ID_Producto}</td>
-                    <td><img src="${producto.imagen}" width="50" height="50"></td>
-                    <td>${producto.Nombre}</td>
-                    <td>${producto.Descripcion}</td>
-                    <td>${producto.Precio}</td>
-                    <td>${producto.Stock}</td>
-                    <td>${producto.Categoria}</td>
-                    <td>${producto.Proveedor}</td>
-                    <td>
-                        <button class="btn btn-warning" onclick="abrirModalEditar(${producto.ID_Producto})">Editar</button>
-                        <button class="btn btn-danger" onclick="eliminarProducto(${producto.ID_Producto})">Eliminar</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${producto.ID_Producto}</td>
+                        <td><img src="${producto.imagen}" width="50" height="50"></td>
+                        <td>${producto.Nombre}</td>
+                        <td>${producto.Descripcion}</td>
+                        <td>${producto.Precio}</td>
+                        <td>${producto.Stock}</td>
+                        <td>${producto.Categoria}</td>
+                        <td>${producto.Proveedor}</td>
+                        <td>
+                            <button class="btn btn-warning" onclick="abrirModalEditar(${producto.ID_Producto})">Editar</button>
+                            <button class="btn btn-danger" onclick="eliminarProducto(${producto.ID_Producto})">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+            }); 
         });
 }
 function crearProducto() {
@@ -44,19 +47,20 @@ function crearProducto() {
     formData.append('idCategoria', document.getElementById("categoriaProducto").value);
     formData.append('idProveedor', document.getElementById("proveedorProducto").value);
 
-    fetch('/Bootstrap/php/producto.php', {
+    fetch('/Bootstrap/controlador/producto.php', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("Producto creado exitosamente");
+            showNotification(data.message, "success");
             document.getElementById('modalCrearProducto').classList.add('hide');
             document.getElementById('modalCrearProducto').style.display = 'none';
             cargarProductos();
         } else{
-            alert("Error: " + data.message);
+            showNotification(data.message, "error");
+
         }
     })
     .catch(error => {
@@ -70,7 +74,7 @@ function abrirModalEditar(idProducto) {
     document.getElementById('modalEditarProducto').classList.add('show');
     // cargar datos del producto
     const action = "obtenerProducto";
-    fetch('/Bootstrap/php/producto.php', {
+    fetch('/Bootstrap/controlador/producto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -95,7 +99,7 @@ function actualizarProducto() {
     const precio = document.getElementById("EdiPrecioProducto").value;
     const stock = document.getElementById("EdiCantidadProducto").value;
 
-    fetch('/Bootstrap/php/producto.php', {
+    fetch('/Bootstrap/controlador/producto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -120,7 +124,7 @@ function actualizarProducto() {
 }
 function eliminarProducto(idProducto) {
     const action = "eliminarProducto";
-    fetch('/Bootstrap/php/producto.php', {
+    fetch('/Bootstrap/controlador/producto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de conexión
-include 'conexion.php';
+include '../config/conexion.php';
 
 // Iniciar o reanudar la sesión
 session_start();

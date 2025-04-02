@@ -1,6 +1,6 @@
 <?php
-include 'conexion.php';
-include 'Categoria.php';
+include '../config/conexion.php';
+include '../modelo/categoria.php';
 
 $input = json_decode(file_get_contents("php://input"), true);
 $action = $input['action'] ?? null;

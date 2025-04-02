@@ -1,16 +1,17 @@
 <?php
 // Incluir el archivo de conexión
-include 'conexion.php';
+include '../config/conexion.php';
 
 session_start();
 
- // Obtener y decodificar la entrada JSON
+// Obtener y decodificar la entrada JSON
 $input = json_decode(file_get_contents("php://input"), true);
 if (!$input || !isset($input['action'])) {
     echo json_encode(['success' => false, 'message' => 'Action']);
     exit;
 }
 $action = $input['action'];
+
 if ($action == "register") {
     // Obtener y decodificar la entrada JSON
     $input = json_decode(file_get_contents("php://input"), true);
@@ -42,7 +43,7 @@ if ($action == "register") {
         }
     }
 } elseif ($action == "login") {
-     // Obtener y decodificar la entrada JSON
+    // Obtener y decodificar la entrada JSON
     $input = json_decode(file_get_contents("php://input"), true);
     if (!$input || !isset($input['username']) || !isset($input['password'])) {
         echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
@@ -62,7 +63,7 @@ if ($action == "register") {
             $storedPassword = $user['password']; // Contraseña almacenada en la base de datos
             
             if (password_verify($password, $storedPassword)) {
-                $_SESSION['user_id']= $user['IdUsuario'];
+                $_SESSION['user_id'] = $user['IdUsuario'];
                 echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Usuario o contraseña incorrectos']);
@@ -73,8 +74,8 @@ if ($action == "register") {
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Error al iniciar sesión: ' . $e->getMessage()]);
     }
-} elseif($action=="getPerfil"){
-    if(!isset($_SESSION['user_id'])){
+} elseif($action == "getPerfil") {
+    if(!isset($_SESSION['user_id'])) {
         echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
         exit;
     }
@@ -97,8 +98,7 @@ if ($action == "register") {
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Error al obtener los datos del perfil: ' . $e->getMessage()]);
     }
-} 
-else {
+} else {
     echo json_encode(['success' => false, 'message' => 'Acción no válida']);
 }
 ?>

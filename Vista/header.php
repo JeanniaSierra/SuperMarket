@@ -26,7 +26,7 @@ $rol = $_SESSION['tipoUsuario'];
     <!-- menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">Admin Panel</a>
+            <a class="navbar-brand" href="principal.php">Admin Panel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -80,7 +80,7 @@ $rol = $_SESSION['tipoUsuario'];
                                 <li><a class="dropdown-item" id="verPerfil" onclick="mostrarPerfil()">Ver Perfil</a></li>
                                 <li><a class="dropdown-item" href="#pedidos">Cuenta</a></li>
                                 <li><a class="dropdown-item" href="#" onclick="cambiarRol()">Cambiar Rol</a></li>
-                                <li><a class="dropdown-item" href="login.html">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="../index.php">Cerrar sesión</a></li>
                             </ul>
                         </li>
                     </ul>

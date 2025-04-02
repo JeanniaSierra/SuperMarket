@@ -1,7 +1,7 @@
 cargarProveedores()
 function cargarProveedores() {
     const action = "cargarProveedores";
-    fetch('/Bootstrap/php/proveedor.php', {
+    fetch('/Bootstrap/controlador/proveedor.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ function crearProveedor(){
     let telefono = document.getElementById('telefonoProveedor').value;
     let direccion = document.getElementById('direccionProveedor').value;
     const action = "crearProveedor";
-    fetch('/Bootstrap/php/proveedor.php', {
+    fetch('/Bootstrap/controlador/proveedor.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
