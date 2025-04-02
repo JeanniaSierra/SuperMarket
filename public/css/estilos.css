@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+    display: none;
+}
+.container-perfil{
+    z-index: 10;
+}
+.menu {
+    background-color: #f7f7f7;
+    padding: 50px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.bg-sect2{
+    background-color: #858383b9;
+}
+.bg-sect1{
+    background-color:antiquewhite;
+}
+.img_info{
+    height: 300px;
+}
+h1{
+    font-family: cursive;
+}
+.social-icons a {
+    color: #f1eded;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #0077b5;
+}
+
+
+.testimonios {
+    background-color: #fff;
+    padding: 50px 0;
+}
+
+.blockquote {
+    font-size: 18px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#perfilDatos {
+    position: fixed;
+    right: 5%;
+    width: 300px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: block; /* Muestra el formulario */
+}
+
+/* Estilo de los inputs y botones */
+.container-perfil h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+#qrcode {
+    width:160px;
+    height:160px;
+    margin-top:15px;
+  }
