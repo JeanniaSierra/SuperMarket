@@ -1,16 +1,18 @@
 <?php
 include '../config/conexion.php';
+require_once '../modelo/producto.php';
+
 $input = json_decode(file_get_contents("php://input"), true);
 $action = $_POST['action'] ?? $input['action'];
 global $pdo;
 
+$productoModel = new Producto($pdo);
+
 if ($action == "cargarProductos") {
     try {
-        $stmt = $pdo->prepare("SELECT p.*, c.Nombre_Categoria as Categoria, pr.Nombre_Proveedor as Proveedor FROM producto p INNER JOIN categoria c ON p.ID_Categoria = c.ID_Categoria INNER JOIN proveedor pr ON p.ID_Proveedor = pr.ID_Proveedor");
-        $stmt->execute();
-        $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $productos = $productoModel->cargarProductos();
         echo json_encode($productos);
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Error al obtener los productos: ' . $e->getMessage()]);
     }
 } elseif ($action == "crearProducto") {
@@ -27,19 +29,11 @@ if ($action == "cargarProductos") {
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    
-
     // Verificar si el archivo ya existe
     if (file_exists($target_file)) {
         echo json_encode(['success' => false, 'message' => 'Lo siento, el archivo ya existe.']);
         $uploadOk = 0;
     }
-
-    // // Verificar el tamaño del archivo
-    // if ($_FILES["imagen"]["size"] > 500000) {
-    //     echo json_encode(['success' => false, 'message' => 'Lo siento, tu archivo es demasiado grande.']);
-    //     $uploadOk = 0;
-    // }
 
     // Permitir ciertos formatos de archivo
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
@@ -50,21 +44,20 @@ if ($action == "cargarProductos") {
     // Verificar si $uploadOk está configurado a 0 por un error
     if ($uploadOk == 0) {
         echo json_encode(['success' => false, 'message' => 'Lo siento, tu archivo no fue subido.']);
-    // Si todo está bien, intentar subir el archivo
     } else {
         if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_file)) {
             try {
-                $stmt = $pdo->prepare("INSERT INTO producto (imagen, Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor) VALUES (:imagen, :nombre, :descripcion, :precio, :stock, :idCategoria, :idProveedor)");
-                $stmt->bindParam(':imagen', $target_file);
-                $stmt->bindParam(':nombre', $nombre);
-                $stmt->bindParam(':descripcion', $descripcion);
-                $stmt->bindParam(':precio', $precio);
-                $stmt->bindParam(':stock', $stock);
-                $stmt->bindParam(':idCategoria', $idCategoria);
-                $stmt->bindParam(':idProveedor', $idProveedor);
-                $stmt->execute();
-                echo json_encode(['success' => true, 'message' => 'Producto agregado correctamente']);
-            } catch (PDOException $e) {
+                $resultado = $productoModel->crearProducto(
+                    $target_file,
+                    $nombre,
+                    $descripcion,
+                    $precio,
+                    $stock,
+                    $idCategoria,
+                    $idProveedor
+                );
+                echo json_encode($resultado);
+            } catch (Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error al agregar el producto: ' . $e->getMessage()]);
             }
         } else {
@@ -79,38 +72,27 @@ if ($action == "cargarProductos") {
     $stock = $input['stock'];
 
     try {
-        $stmt = $pdo->prepare("UPDATE producto SET Nombre = :nombre, Descripcion = :descripcion, Precio = :precio, Stock = :stock WHERE ID_Producto = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':descripcion', $descripcion);
-        $stmt->bindParam(':precio', $precio);
-        $stmt->bindParam(':stock', $stock);
-        $stmt->execute();
-        echo json_encode(['success' => true, 'message' => 'Producto editado correctamente']);
-    } catch (PDOException $e) {
+        $resultado = $productoModel->actualizarProducto($id, $nombre, $descripcion, $precio, $stock);
+        echo json_encode($resultado);
+    } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Error al editar el producto: ' . $e->getMessage()]);
     }
 } elseif ($action == "obtenerProducto") {
     $idProducto = $input['idProducto'];
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM producto WHERE ID_Producto = :idProducto");
-        $stmt->bindParam(':idProducto', $idProducto);
-        $stmt->execute();
-        $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+        $producto = $productoModel->obtenerProducto($idProducto);
         echo json_encode($producto);
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Error al obtener el producto: ' . $e->getMessage()]);
     }
 } elseif ($action == "eliminarProducto") {
     $id = $input['idProducto'];
 
     try {
-        $stmt = $pdo->prepare("DELETE FROM producto WHERE ID_Producto = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        echo json_encode(['success' => true, 'message' => 'Producto eliminado correctamente']);
-    } catch (PDOException $e) {
+        $resultado = $productoModel->eliminarProducto($id);
+        echo json_encode($resultado);
+    } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Error al eliminar el producto: ' . $e->getMessage()]);
     }
 }

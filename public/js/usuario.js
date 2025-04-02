@@ -9,7 +9,7 @@ function verificarLogin() {
     const tipoUsuario = document.getElementById("tipoUsuario").value;
     const mensaje = document.getElementById("message");
 
-    fetch("/Bootstrap/controlador/usuario.php", {
+    fetch("/Bootstrap/controlador/controladorUsuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -65,7 +65,7 @@ function registrarUsuario() {
     const email = document.getElementById("registroEmail").value;
     const password = document.getElementById("registroContraseña").value;
 
-    fetch("/Bootstrap/controlador/usuario.php", {
+    fetch("/Bootstrap/controlador/controladorUsuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -92,7 +92,7 @@ function registrarUsuario() {
 function mostrarPerfil() {
     document.getElementById("overlay").style.display = "block";
     const action="getPerfil";
-    fetch("/Bootstrap/controlador/usuario.php", {
+    fetch("/Bootstrap/controlador/controladorUsuario.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -140,7 +140,7 @@ function modificarPerfil(){
     const telefono = document.getElementById("perfilTelefono").value;
     const email = document.getElementById("perfilEmail").value;
 
-    fetch("/Bootstrap/controlador/usuario.php",{
+    fetch("/Bootstrap/controlador/controladorUsuario.php",{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

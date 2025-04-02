@@ -4,7 +4,7 @@ cargarProductos();
 
 function cargarProductos() {
     const action = "cargarProductos";
-    fetch('/Bootstrap/controlador/producto.php', {
+    fetch('/Bootstrap/controlador/controladorProducto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -13,26 +13,27 @@ function cargarProductos() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             let tbody = document.getElementById('listaProductos');
             tbody.innerHTML = '';
             data.forEach(producto => {
-                    let tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${producto.ID_Producto}</td>
-                        <td><img src="${producto.imagen}" width="50" height="50"></td>
-                        <td>${producto.Nombre}</td>
-                        <td>${producto.Descripcion}</td>
-                        <td>${producto.Precio}</td>
-                        <td>${producto.Stock}</td>
-                        <td>${producto.Categoria}</td>
-                        <td>${producto.Proveedor}</td>
-                        <td>
-                            <button class="btn btn-warning" onclick="abrirModalEditar(${producto.ID_Producto})">Editar</button>
-                            <button class="btn btn-danger" onclick="eliminarProducto(${producto.ID_Producto})">Eliminar</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-            }); 
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${producto.ID_Producto}</td>
+                    <td><img src="${producto.imagen}" width="50" height="50"></td>
+                    <td>${producto.Nombre}</td>
+                    <td>${producto.Descripcion}</td>
+                    <td>${producto.Precio}</td>
+                    <td>${producto.Stock}</td>
+                    <td>${producto.Categoria}</td>
+                    <td>${producto.Proveedor}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="abrirModalEditar(${producto.ID_Producto})">Editar</button>
+                        <button class="btn btn-danger" onclick="eliminarProducto(${producto.ID_Producto})">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         });
 }
 function crearProducto() {
@@ -47,26 +48,26 @@ function crearProducto() {
     formData.append('idCategoria', document.getElementById("categoriaProducto").value);
     formData.append('idProveedor', document.getElementById("proveedorProducto").value);
 
-    fetch('/Bootstrap/controlador/producto.php', {
+    fetch('/Bootstrap/controlador/controladorProducto.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification(data.message, "success");
-            document.getElementById('modalCrearProducto').classList.add('hide');
-            document.getElementById('modalCrearProducto').style.display = 'none';
-            cargarProductos();
-        } else{
-            showNotification(data.message, "error");
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(data.message, "success");
+                document.getElementById('modalCrearProducto').classList.add('hide');
+                document.getElementById('modalCrearProducto').style.display = 'none';
+                cargarProductos();
+            } else {
+                showNotification(data.message, "error");
 
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("Error en la creación");
-    });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error en la creación");
+        });
 }
 function abrirModalEditar(idProducto) {
     // abrir modal
@@ -74,7 +75,7 @@ function abrirModalEditar(idProducto) {
     document.getElementById('modalEditarProducto').classList.add('show');
     // cargar datos del producto
     const action = "obtenerProducto";
-    fetch('/Bootstrap/controlador/producto.php', {
+    fetch('/Bootstrap/controlador/controladorProducto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -99,12 +100,12 @@ function actualizarProducto() {
     const precio = document.getElementById("EdiPrecioProducto").value;
     const stock = document.getElementById("EdiCantidadProducto").value;
 
-    fetch('/Bootstrap/controlador/producto.php', {
+    fetch('/Bootstrap/controlador/controladorProducto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ action, id, nombre, descripcion, precio, stock})
+        body: JSON.stringify({ action, id, nombre, descripcion, precio, stock })
     })
         .then(response => response.json())
         .then(data => {
@@ -124,7 +125,7 @@ function actualizarProducto() {
 }
 function eliminarProducto(idProducto) {
     const action = "eliminarProducto";
-    fetch('/Bootstrap/controlador/producto.php', {
+    fetch('/Bootstrap/controlador/controladorProducto.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -145,4 +146,3 @@ function eliminarProducto(idProducto) {
             alert("Error en la eliminación");
         });
 }
-    
